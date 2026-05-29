@@ -34,8 +34,8 @@ const processImages = async () => {
             return {
               src: `${root_url}/foto/${author}/${p}`,
               original: `${root_url}/foto/${author}/${p}`,
-              width: isLandscape ? 4 : 3,
-              height: isLandscape ? 3 : 4,
+              width: isLandscape ? 1200 : 800,
+              height: isLandscape ? 800 : 1200,
               alt: "Fotka z jarního Diecézka 2026",
               caption: "Fotka z jarního Diecézka 2026",
             };

@@ -35,38 +35,44 @@ if [ ! -d "$destination_folder" ]; then
 fi
 
 # Loop through each file in the source folder
-for file in "$source_folder"/*; do
-   # Check if the item is a file
-   if [ -f "$file" ]; then
-      # Extract the file name from the full path
-      file_name=$(basename "$file")
+# for file in "$source_folder"/*; do
+#    # Check if the item is a file
+#    if [ -f "$file" ]; then
+#       # Extract the file name from the full path
+#       file_name=$(basename "$file")
 
-      # Extract the name without extension
-      file_stem="${file_name%.*}"
+#       # Extract the name without extension
+#       file_stem="${file_name%.*}"
 
-      #if file exists in destination folder, skip
-      if [ -f "$destination_folder/$file_stem".* ]; then
-         echo -e "${RED}File already exists: $file_name${NC}"
-         continue
-      fi
-      # exit 0
+#       #if file exists in destination folder, skip
+#       if [ -f "$destination_folder/$file_stem".* ]; then
+#          echo -e "${RED}File already exists: $file_name${NC}"
+#          continue
+#       fi
+#       # exit 0
 
-      # Copy the file to the destination folder
-      cp "$file" "$destination_folder/$file_name"
+#       # Copy the file to the destination folder
+#       cp "$file" "$destination_folder/$file_name"
 
-      echo -e "${GREEN}Copied: $file_name${NC}"
+#       echo -e "${GREEN}Copied: $file_name${NC}"
 
-      # Generate files
-      rm -f "${destination_folder}/images.json"
-      yarn img2webp "$destination_folder/$file_name"
+#       # Generate files
+#       rm -f "${destination_folder}/images.json"
+#       yarn img2webp "$destination_folder/$file_name"
 
-      rm "$destination_folder/$file_name"
+#       rm "$destination_folder/$file_name"
 
-      echo -e "${YELLOW}Image has been commited${NC}"
-      echo ""
-   fi
-done
+#       echo -e "${YELLOW}Image has been commited${NC}"
+#       echo ""
+#    fi
+# done
 
+# create gallery json
 yarn gallery
 
-echo "Copy process completed."
+# Format the JSON file using jq
+gallery_path="${destination_folder}/images"
+cat "${gallery_path}.json" | jq > "${gallery_path}_bak.json"
+mv "${gallery_path}_bak.json" "${gallery_path}.json"
+
+echo "Copy process completed. Gallery JSON file created at ${gallery_path}.json"
